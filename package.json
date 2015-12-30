@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/DanTheMan827/homebridge-ds18b20.git"
   },
+  "files": ["index.js","README.md"],
   "keywords": [
     "homebridge-plugin"
   ],
