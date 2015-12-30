@@ -1,0 +1,25 @@
+{
+  "name": "homebridge-ds18b20",
+  "version": "1.0.0",
+  "description": "A HomeBridge plugin for DS18B20 temperature sensors.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanTheMan827/homebridge-ds18b20.git"
+  },
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "author": "Daniel Radtke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DanTheMan827/homebridge-ds18b20/issues"
+  },
+  "homepage": "https://github.com/DanTheMan827/homebridge-ds18b20#readme",
+  "dependencies": {
+    "ds18b20": "^0.1.0"
+  }
+}
