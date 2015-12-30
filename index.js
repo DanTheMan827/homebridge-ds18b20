@@ -4,7 +4,7 @@ var Service, Characteristic;
 module.exports = function(homebridge) {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  homebridge.registerAccessory("homebridge-temperature-ds18b20", "TemperatureDS18B20", TemperatureAccessory);
+  homebridge.registerAccessory("homebridge-temperature-ds18b20", "DS18B20", TemperatureAccessory);
 }
 
 function TemperatureAccessory(log, config) {
@@ -25,7 +25,7 @@ TemperatureAccessory.prototype.getState = function(callback) {
   });
 }
 
-TemperatureFileAccessory.prototype.getServices = function() {
+TemperatureAccessory.prototype.getServices = function() {
   return [this.service];
 }
 
