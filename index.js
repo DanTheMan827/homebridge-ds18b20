@@ -16,6 +16,7 @@ function TemperatureAccessory(log, config) {
 
   this.service
     .getCharacteristic(Characteristic.CurrentTemperature)
+    .setProps({ minValue: -55, maxValue: 125 })
     .on('get', this.getState.bind(this));
 }
 
