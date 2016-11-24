@@ -38,7 +38,7 @@ TemperatureAccessory.prototype =
       else
       {
         this.log(devicePath + " not found ! " );
-        this.temperature = 0.0;
+        //this.temperature = "";
       }
     temperatureService.setCharacteristic(Characteristic.CurrentTemperature, this.temperature);
     callback(null, this.temperature);
@@ -58,13 +58,10 @@ TemperatureAccessory.prototype =
 
     var data = fs.readFileSync('/proc/cpuinfo', 'utf8');
     if (typeof data == 'undefined') { return this.log("Failed to read /proc/cpuinfo"); }
-    var model = data.match(/Hardware\s+\:\s*(\S+)/)[1] + "/" + data.match(/Revision\s+\:\s*(\S+)/)[1];
-    var serial = data.match(/Serial\s+\:\s*(\S+)/)[1];
     informationService
       .setCharacteristic(Characteristic.Manufacturer, "Dallas")
-      .setCharacteristic(Characteristic.Model, model)
+      .setCharacteristic(Characteristic.Model, "")
       .setCharacteristic(Characteristic.SerialNumber, this.deviceName);
-    this.log("Model " + model + " Serial " + serial);
 
     temperatureService = new Service.TemperatureSensor(this.name);
     temperatureService
