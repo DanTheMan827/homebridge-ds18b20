@@ -37,7 +37,9 @@ TemperatureAccessory.prototype =
       }
       else
       {
-        this.log(devicePath + " not found ! " );
+	this.log(devicePath + " not found ! " );
+	callback(-1);
+        return;
         //this.temperature = "";
       }
     temperatureService.setCharacteristic(Characteristic.CurrentTemperature, this.temperature);
