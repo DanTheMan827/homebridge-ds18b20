@@ -1,5 +1,5 @@
 # homebridge-ds18b20
-This is a plugin for the DS18B20 temperature sensors.
+This is a plugin for the DS18B20 temperature sensors. It relies on OWFS filesystem directly.
 
 Installation
 --------------------
