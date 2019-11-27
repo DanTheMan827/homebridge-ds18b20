@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/DanTheMan827/homebridge-ds18b20#readme",
   "dependencies": {
-    "ds18b20": "^0.1.0"
+    "ds18b20-raspi": "^0.3.4"
   }
 }
