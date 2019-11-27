@@ -16,6 +16,7 @@ function TemperatureAccessory(log, config) {
   this.name = config["name"];
   this.device = config["device"];
   this.pollInterval = config["pollInterval"];
+  this.offsetC = config["offsetC"] || 0;
 
   this.service = new Service.TemperatureSensor(this.name);
 
@@ -41,7 +42,13 @@ function TemperatureAccessory(log, config) {
 }
 
 TemperatureAccessory.prototype.getState = function(callback) {
-  ds18b20.readC(this.device, 2, callback);
+  ds18b20.readC(this.device, 2, function(err, value) {
+    if (!err) {
+      callback(null, value + this.offsetC);
+    } else {
+      callback(err);
+    }
+  });
 };
 TemperatureAccessory.prototype.getServices = function() {
   return [this.service];
