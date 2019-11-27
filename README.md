@@ -21,7 +21,8 @@ Sample HomeBridge Configuration
         {
           "accessory": "DS18B20",
           "name": "Temperature Sensor",
-          "device": "28-0000063f4ead"
+          "device": "28-0000063f4ead",
+          "pollInterval": 5000
         }
       ],
     

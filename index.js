@@ -15,6 +15,7 @@ function TemperatureAccessory(log, config) {
   this.log = log;
   this.name = config["name"];
   this.device = config["device"];
+  this.pollInterval = config["pollInterval"];
 
   this.service = new Service.TemperatureSensor(this.name);
 
@@ -22,6 +23,21 @@ function TemperatureAccessory(log, config) {
     .getCharacteristic(Characteristic.CurrentTemperature)
     .setProps({ minValue: -100, maxValue: 125 })
     .on("get", this.getState.bind(this));
+
+  if (pollInterval) {
+    setInterval(
+      function() {
+        ds18b20.readC(this.device, 2, function(err, value) {
+          if (!err) {
+            this.service
+              .getCharacteristic(Characteristic.CurrentTemperature)
+              .updateValue(value);
+          }
+        });
+      }.bind(this),
+      this.pollInterval
+    );
+  }
 }
 
 TemperatureAccessory.prototype.getState = function(callback) {
