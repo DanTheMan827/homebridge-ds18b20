@@ -34,7 +34,7 @@ function TemperatureAccessory(log, config) {
               .getCharacteristic(Characteristic.CurrentTemperature)
               .updateValue(value);
           }
-        });
+        }.bind(this));
       }.bind(this),
       this.pollInterval
     );
@@ -48,7 +48,7 @@ TemperatureAccessory.prototype.getState = function(callback) {
     } else {
       callback(err);
     }
-  });
+  }.bind(this));
 };
 TemperatureAccessory.prototype.getServices = function() {
   return [this.service];
