@@ -25,7 +25,7 @@ function TemperatureAccessory(log, config) {
     .setProps({ minValue: -100, maxValue: 125 })
     .on("get", this.getState.bind(this));
 
-  if (pollInterval) {
+  if (this.pollInterval) {
     setInterval(
       function() {
         ds18b20.readC(this.device, 2, function(err, value) {
