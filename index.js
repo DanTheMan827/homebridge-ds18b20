@@ -5,7 +5,7 @@ module.exports = function(homebridge) {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
   homebridge.registerAccessory(
-    "homebridge-temperature-ds18b20",
+    "homebridge-ds18b20",
     "DS18B20",
     TemperatureAccessory
   );
