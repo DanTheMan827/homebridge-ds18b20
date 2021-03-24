@@ -32,7 +32,7 @@ function TemperatureAccessory(log, config) {
           if (!err) {
             this.service
               .getCharacteristic(Characteristic.CurrentTemperature)
-              .updateValue(value);
+              .updateValue(value + this.offsetC);
           }
         }.bind(this));
       }.bind(this),
