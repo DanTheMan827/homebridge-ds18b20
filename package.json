@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ds18b20",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A HomeBridge plugin for DS18B20 temperature sensors.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DanTheMan827/homebridge-ds18b20.git"
+    "url": "git+https://github.com/geovaneferreira/homebridge-ds18b20.git"
   },
   "files": [
     "index.js",
@@ -21,16 +21,16 @@
     "node": ">=0.12.0",
     "homebridge": ">=0.2.0"
   },
-  "author": "Daniel Radtke",
+  "author": "Geovane Ferreira",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DanTheMan827/homebridge-ds18b20/issues"
+    "url": "https://github.com/geovaneferreira/homebridge-ds18b20/issues"
   },
-  "homepage": "https://github.com/DanTheMan827/homebridge-ds18b20#readme",
+  "homepage": "https://github.com/geovaneferreira/homebridge-ds18b20#readme",
   "dependencies": {
     "ds18b20-raspi": "^0.3.4",
     "mcuiot-logger": ">0.0.6",
     "moment": ">2.20.1",
-    "fakegato-history": "^0.5.6"
+    "fakegato-history": "^0.6.1"
   }
 }

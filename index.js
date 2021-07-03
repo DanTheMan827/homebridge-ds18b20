@@ -2,6 +2,8 @@ var ds18b20 = require("ds18b20-raspi");
 var Service, Characteristic, FakeGatoHistoryService, loggingService;
 var Logger = require("mcuiot-logger").logger;
 const moment = require('moment');
+var os = require("os");
+var hostname = os.hostname();
 
 module.exports = function(homebridge) {
   Service = homebridge.hap.Service;
@@ -23,6 +25,7 @@ function TemperatureAccessory(log, config) {
   this.offsetC = config["offsetC"] || 0;
   this.spreadsheetId = config['spreadsheetId'];
   this.log_event_counter = 59;
+  this.storage = config['storage'] || "fs";
   if (this.spreadsheetId) {
     this.logger = new Logger(this.spreadsheetId);
   }
@@ -50,7 +53,7 @@ TemperatureAccessory.prototype = {
 
           this.loggingService.addEntry({
             time: moment().unix(),
-            temp: roundInt(value + this.offsetC),
+            temp: roundInt(value + this.offsetC)
           });
 
           callback(err, value + this.offsetC);
@@ -74,13 +77,15 @@ TemperatureAccessory.prototype = {
     informationService
       .setCharacteristic(Characteristic.Manufacturer, "DS18B20")
       .setCharacteristic(Characteristic.Model, this.service)
-      .setCharacteristic(Characteristic.SerialNumber, "18B20-" + this.name)
+      .setCharacteristic(Characteristic.SerialNumber, hostname + "-" + this.name)
       .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
 
     this.service.log = this.log;
     this.loggingService = new FakeGatoHistoryService("weather", this.service, {
-      storage: this.storage,
-      minutes: (this.pollInterval/1000) * 10 / 60
+        //size:4600, 				// optional - if you still need to specify the length
+        storage:'fs',
+        path:'/home/pi/homebridgedb/',  // if empty it will be used the -U homebridge option if present, or .homebridge in the user's home folder
+        minutes: ((this.pollInterval/1000) * 10 / 60)
     });
 
     setInterval(function() {
