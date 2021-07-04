@@ -90,7 +90,6 @@ TemperatureAccessory.prototype = {
           this.loggingService = new FakeGatoHistoryService("weather", this.dsservice, {
               //size:4600,        // optional - if you still need to specify the length
               storage:'fs',
-              //path:'/home/pi/homebridgedb/',  // if empty it will be used the -U homebridge option if present, or .homebridge in the user's home folder
               minutes: ((this.pollInterval/1000) * 10 / 60)
           });
 
