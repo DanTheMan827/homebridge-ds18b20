@@ -1,9 +1,10 @@
 var ds18b20 = require("ds18b20-raspi");
-var Service, Characteristic, FakeGatoHistoryService, loggingService;
+var Service, Characteristic, FakeGatoHistoryService;
 var Logger = require("mcuiot-logger").logger;
 const moment = require('moment');
 var os = require("os");
 var hostname = os.hostname();
+var fs = require('fs');
 
 module.exports = function(homebridge) {
   Service = homebridge.hap.Service;
@@ -24,17 +25,13 @@ function TemperatureAccessory(log, config) {
   this.pollInterval = config["pollInterval"] || "60000";// Every minute
   this.offsetC = config["offsetC"] || 0;
   this.spreadsheetId = config['spreadsheetId'];
-  this.log_event_counter = 59;
   this.storage = config['storage'] || "fs";
+  this.service = config.service || "DS18B20";
+  
+  this.log_event_counter = 59;
   if (this.spreadsheetId) {
     this.logger = new Logger(this.spreadsheetId);
   }
-
-  this.service = new Service.TemperatureSensor(this.name);
-  this.service
-    .getCharacteristic(Characteristic.CurrentTemperature)
-    .setProps({ minValue: -100, maxValue: 125 })
-    .on("get", this.getState.bind(this));
 }
 
 TemperatureAccessory.prototype = {
@@ -46,7 +43,7 @@ TemperatureAccessory.prototype = {
         this.log_event_counter = this.log_event_counter + 1;
           if (this.log_event_counter > 59) {
             if (this.spreadsheetId) {
-              this.logger.storeDS(this.name, roundInt(value + this.offsetC));
+              this.logger.storeDHT(this.name, 0, roundInt(value + this.offsetC), 0);
             }
             this.log_event_counter = 0;
           }
@@ -80,25 +77,35 @@ TemperatureAccessory.prototype = {
       .setCharacteristic(Characteristic.SerialNumber, hostname + "-" + this.name)
       .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
 
-    this.service.log = this.log;
-    this.loggingService = new FakeGatoHistoryService("weather", this.service, {
-        //size:4600, 				// optional - if you still need to specify the length
-        storage:'fs',
-        path:'/home/pi/homebridgedb/',  // if empty it will be used the -U homebridge option if present, or .homebridge in the user's home folder
-        minutes: ((this.pollInterval/1000) * 10 / 60)
-    });
+      switch (this.service) {
+        case "DS18B20":
+          this.dsservice = new Service.TemperatureSensor(this.name);
+          this.dsservice
+            .getCharacteristic(Characteristic.CurrentTemperature)
+            .setProps({ minValue: -100, maxValue: 125 })
+            ;
+            //.on("get", this.getState.bind(this));
 
-    setInterval(function() {
-      this.getState(function(err, value) {
-          if (!err) {
-            this.service
-              .getCharacteristic(Characteristic.CurrentTemperature)
-              .updateValue(value + this.offsetC);
-          }
-        }.bind(this));
-      }.bind(this), this.pollInterval * 1);
-    
-    return [this.service, informationService, loggingService];
+          this.dsservice.log = this.log;
+          this.loggingService = new FakeGatoHistoryService("weather", this.dsservice, {
+              //size:4600,        // optional - if you still need to specify the length
+              storage:'fs',
+              //path:'/home/pi/homebridgedb/',  // if empty it will be used the -U homebridge option if present, or .homebridge in the user's home folder
+              minutes: ((this.pollInterval/1000) * 10 / 60)
+          });
+
+          setInterval(function() {
+            this.getState(function(err, value) {
+                if (!err) {
+                  this.dsservice
+                    .getCharacteristic(Characteristic.CurrentTemperature)
+                    .updateValue(value + this.offsetC);
+                }
+              }.bind(this));
+            }.bind(this), this.pollInterval * 1);
+          
+        return [this.dsservice, informationService, this.loggingService];
+      }
   }
 };
 
