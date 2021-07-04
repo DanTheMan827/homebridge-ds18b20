@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ds18b20",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "A HomeBridge plugin for DS18B20 temperature sensors.",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,9 @@
   },
   "homepage": "https://github.com/DanTheMan827/homebridge-ds18b20#readme",
   "dependencies": {
-    "ds18b20-raspi": "^0.3.4"
+    "ds18b20-raspi": "^0.3.4",
+    "mcuiot-logger": ">0.0.6",
+    "moment": ">2.20.1",
+    "fakegato-history": "^0.6.1"
   }
 }
